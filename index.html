@@ -79,9 +79,9 @@
     </header>
 
     <div class="dashboard">
-        <div class="card"><div class="card-label">Total por Cobrar</div><div class="card-value c-green" id="d-total">Bs. 0</div></div>
+        <div class="card"><div class="card-label">Total por Cobrar — Bs</div><div class="card-value c-green" id="d-total-bs">Bs. 0</div></div>
+        <div class="card"><div class="card-label">Total por Cobrar — $</div><div class="card-value c-green" id="d-total-usd">$ 0.00</div></div>
         <div class="card"><div class="card-label">Vencidos — Urgente</div><div class="card-value c-red" id="d-vencidos">0</div></div>
-        <div class="card"><div class="card-label">Vencen en 3 días</div><div class="card-value c-orange" id="d-proximos">0</div></div>
         <div class="card"><div class="card-label">Clientes con Deuda</div><div class="card-value" id="d-clientes">0</div></div>
     </div>
 
@@ -95,7 +95,13 @@
             <h2>Registrar Fiado</h2>
             <div class="form-row">
                 <div class="form-group"><label>Cliente</label><select id="f-cliente"><option value="">Seleccionar...</option></select></div>
-                <div class="form-group"><label>Monto (Bs)</label><input type="number" id="f-monto" min="0" step="0.01" placeholder="0.00"></div>
+                <div class="form-group"><label>Moneda</label>
+                    <select id="f-moneda" onchange="actualizarLabelMonto()">
+                        <option value="Bs">🇻🇪 Bolívares (Bs)</option>
+                        <option value="$">🇺🇸 Dólares ($)</option>
+                    </select>
+                </div>
+                <div class="form-group"><label id="label-monto">Monto (Bs)</label><input type="number" id="f-monto" min="0" step="0.01" placeholder="0.00"></div>
                 <div class="form-group"><label>Fecha de Vencimiento</label><input type="date" id="f-fecha"></div>
             </div>
             <div class="form-group" style="margin-bottom:12px"><label>Descripción</label><input type="text" id="f-desc" placeholder="Ej: 2kg arroz, 1 aceite..."></div>
@@ -157,8 +163,14 @@ async function detectarModo() {
 }
 
 const hoy = () => new Date().toISOString().split('T')[0];
-const bs  = n => 'Bs. '+parseFloat(n||0).toFixed(2);
+const fmt = (n, moneda) => (moneda==='$' ? '$ ' : 'Bs. ') + parseFloat(n||0).toFixed(2);
 const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+function actualizarLabelMonto() {
+    const m = document.getElementById('f-moneda').value;
+    document.getElementById('label-monto').textContent = m==='$' ? 'Monto ($)' : 'Monto (Bs)';
+    document.getElementById('f-monto').placeholder = m==='$' ? '0.00' : '0.00';
+}
 
 function toast(msg, dur=3000) {
     const t = document.getElementById('toast');
@@ -201,19 +213,21 @@ function tab(name) {
 function dashboard() {
     const en3 = new Date(); en3.setDate(en3.getDate()+3);
     const en3Str = en3.toISOString().split('T')[0];
-    let total=0, vencidos=0, proximos=0; const conDeuda=new Set();
+    let totalBs=0, totalUsd=0, vencidos=0; const conDeuda=new Set();
     _fiados.forEach(f=>{
         const est=estadoFiado(f);
         if (est!=='pagado') {
-            total+=parseFloat(f.monto); conDeuda.add(f.clienteId);
+            const m = f.moneda||'Bs';
+            if (m==='$') totalUsd+=parseFloat(f.monto);
+            else totalBs+=parseFloat(f.monto);
+            conDeuda.add(f.clienteId);
             if (est==='vencido') vencidos++;
-            else if (f.fechaVence<=en3Str) proximos++;
         }
     });
-    document.getElementById('d-total').textContent=bs(total);
-    document.getElementById('d-vencidos').textContent=vencidos;
-    document.getElementById('d-proximos').textContent=proximos;
-    document.getElementById('d-clientes').textContent=conDeuda.size;
+    document.getElementById('d-total-bs').textContent = 'Bs. '+totalBs.toFixed(2);
+    document.getElementById('d-total-usd').textContent = '$ '+totalUsd.toFixed(2);
+    document.getElementById('d-vencidos').textContent = vencidos;
+    document.getElementById('d-clientes').textContent = conDeuda.size;
 }
 
 function refreshSelect() {
@@ -263,13 +277,14 @@ async function guardarFiado() {
     const monto=parseFloat(document.getElementById('f-monto').value);
     const fechaVence=document.getElementById('f-fecha').value;
     const desc=document.getElementById('f-desc').value.trim();
+    const moneda=document.getElementById('f-moneda').value;
     if (!clienteId){toast('⚠ Selecciona un cliente');return;}
     if (!monto||monto<=0){toast('⚠ Monto inválido');return;}
     if (!fechaVence){toast('⚠ Ingresa la fecha');return;}
     if (modoLocal) {
-        const r=await fetch(JARVIS_BASE+'/fiadospro/fiados',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clienteId,monto,fechaVence,desc})});
+        const r=await fetch(JARVIS_BASE+'/fiadospro/fiados',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clienteId,monto,fechaVence,desc,moneda})});
         _fiados.push(await r.json());
-    } else { _fiados.push({id:uid(),clienteId,monto,fechaVence,desc,estado:'pendiente',fechaReg:hoy()}); saveLocal(); }
+    } else { _fiados.push({id:uid(),clienteId,monto,fechaVence,desc,moneda,estado:'pendiente',fechaReg:hoy()}); saveLocal(); }
     document.getElementById('f-monto').value='';
     document.getElementById('f-desc').value='';
     renderFiados(); dashboard(); toast('✅ Fiado registrado');
@@ -288,7 +303,9 @@ function renderFiados() {
         const est=f._est;
         const bC=est==='pagado'?'b-pagado':est==='vencido'?'b-vencido':'b-pendiente';
         const bT=est==='pagado'?'Pagado':est==='vencido'?'Vencido':'Pendiente';
-        const waMsg=encodeURIComponent('Hola '+c.nombre+'! Te recordamos tu fiado de '+bs(f.monto)+(f.desc?' ('+f.desc+')':'')+' que vence el '+f.fechaVence+'. Por favor coordina el pago. ¡Gracias!');
+        const moneda = f.moneda || 'Bs';
+        const monedaFlag = moneda==='$' ? '🇺🇸' : '🇻🇪';
+        const waMsg=encodeURIComponent('Hola '+c.nombre+'! Te recordamos tu fiado de '+fmt(f.monto,moneda)+(f.desc?' ('+f.desc+')':'')+' que vence el '+f.fechaVence+'. Por favor coordina el pago. ¡Gracias!');
         const acciones=est!=='pagado'
             ?'<button class="btn btn-sm" onclick="marcarPagado(\''+f.id+'\')">✓</button>'+
               (modoLocal
@@ -298,7 +315,7 @@ function renderFiados() {
             :'<button class="btn btn-sm btn-ghost" onclick="revertir(\''+f.id+'\')">↩</button>';
         const tr=document.createElement('tr');
         tr.innerHTML='<td><strong>'+c.nombre+'</strong><br><span class="sub">+'+c.tel+'</span></td>'+
-            '<td style="font-weight:600">'+bs(f.monto)+'</td>'+
+            '<td style="font-weight:600">'+monedaFlag+' '+fmt(f.monto,moneda)+'</td>'+
             '<td>'+f.fechaVence+'</td><td class="sub">'+(f.desc||'—')+'</td>'+
             '<td><span class="badge '+bC+'">'+bT+'</span></td>'+
             '<td class="actions">'+acciones+'<button class="btn btn-sm btn-danger" onclick="borrarFiado(\''+f.id+'\')">🗑</button></td>';
