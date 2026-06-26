@@ -7,39 +7,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #0a0a0a;
-            --bg-card: #16162a;
-            --bg-input: #0f0f1e;
-            --text-main: #e0e0e0;
-            --text-muted: #a0a0b0;
-            --accent: #00ff88;
-            --accent-hover: #00cc6a;
-            --danger: #ff4d4d;
-            --warning: #ffa500;
-            --border: #2a2a40;
+            --bg-body: #0a0a0a; --bg-card: #16162a; --bg-input: #0f0f1e;
+            --text-main: #e0e0e0; --text-muted: #a0a0b0;
+            --accent: #00ff88; --accent-hover: #00cc6a;
+            --danger: #ff4d4d; --warning: #ffa500; --border: #2a2a40;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); padding: 20px; font-size: 14px; }
         .container { max-width: 1200px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-        h1 { font-size: 26px; font-weight: 700; color: var(--accent); }
-        h1 span { color: var(--text-muted); font-size: 13px; font-weight: 400; margin-left: 10px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+        h1 { font-size: 24px; font-weight: 700; color: var(--accent); }
+        h1 span { color: var(--text-muted); font-size: 12px; font-weight: 400; margin-left: 8px; }
+        .mode-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .mode-local { background: rgba(0,255,136,.15); color: var(--accent); border: 1px solid var(--accent); }
+        .mode-cloud { background: rgba(100,100,255,.15); color: #8888ff; border: 1px solid #8888ff; }
         h2 { font-size: 16px; margin-bottom: 15px; }
-        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
         .card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); transition: border-color .2s; }
         .card:hover { border-color: var(--accent); }
         .card-label { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-        .card-value { font-size: 28px; font-weight: 700; }
-        .c-green { color: var(--accent); }
-        .c-red { color: var(--danger); }
-        .c-orange { color: var(--warning); }
+        .card-value { font-size: 26px; font-weight: 700; }
+        .c-green { color: var(--accent); } .c-red { color: var(--danger); } .c-orange { color: var(--warning); }
         .section { background: var(--bg-card); padding: 22px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px; }
-        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 14px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 12px; }
         .form-group { display: flex; flex-direction: column; }
         label { margin-bottom: 5px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
         input, select { background: var(--bg-input); border: 1px solid var(--border); padding: 9px 12px; border-radius: 8px; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 14px; outline: none; transition: border-color .2s; }
         input:focus, select:focus { border-color: var(--accent); }
-        .btn { background: var(--accent); color: #000; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 13px; transition: background .2s; }
+        .btn { background: var(--accent); color: #000; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 13px; transition: background .2s; display: inline-flex; align-items: center; gap: 5px; }
         .btn:hover { background: var(--accent-hover); }
         .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
         .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
@@ -59,83 +54,57 @@
         .b-pendiente { background: rgba(255,165,0,.15); color: var(--warning); }
         .b-vencido { background: rgba(255,77,77,.15); color: var(--danger); }
         .b-pagado { background: rgba(0,255,136,.15); color: var(--accent); }
-        .actions { display: flex; gap: 6px; align-items: center; }
+        .actions { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
         .wa-btn { display: inline-flex; align-items: center; background: #25D366; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; gap: 4px; }
         .wa-btn:hover { background: #1ebe5b; }
+        .jarvis-btn { display: inline-flex; align-items: center; background: #0055ff; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; gap: 4px; }
+        .jarvis-btn:hover { background: #0040cc; }
         .hidden { display: none; }
         .empty { text-align: center; padding: 30px; color: var(--text-muted); }
-        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .text-muted { color: var(--text-muted); font-size: 12px; }
-        .nombre-bold { font-weight: 600; }
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .sub { color: var(--text-muted); font-size: 11px; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #1a2a1a; border: 1px solid var(--accent); color: var(--accent); padding: 12px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 9999; transform: translateY(80px); transition: transform .3s; }
+        .toast.show { transform: translateY(0); }
         @media(max-width:600px){ .form-row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 <div class="container">
-
     <header>
-        <div>
-            <h1>FiadosPro <span>by A2K Digital Studio</span></h1>
+        <h1>FiadosPro <span>by A2K Digital Studio</span></h1>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span id="modo-badge" class="mode-badge mode-cloud">☁ Modo Nube</span>
+            <span class="sub" id="fechaHoy"></span>
         </div>
-        <div class="text-muted" id="fechaHoy"></div>
     </header>
 
-    <!-- Dashboard -->
     <div class="dashboard">
-        <div class="card">
-            <div class="card-label">Total por Cobrar</div>
-            <div class="card-value c-green" id="d-total">Bs. 0</div>
-        </div>
-        <div class="card">
-            <div class="card-label">Vencidos — Urgente</div>
-            <div class="card-value c-red" id="d-vencidos">0</div>
-        </div>
-        <div class="card">
-            <div class="card-label">Vencen en 3 días</div>
-            <div class="card-value c-orange" id="d-proximos">0</div>
-        </div>
-        <div class="card">
-            <div class="card-label">Clientes con Deuda</div>
-            <div class="card-value" id="d-clientes">0</div>
-        </div>
+        <div class="card"><div class="card-label">Total por Cobrar</div><div class="card-value c-green" id="d-total">Bs. 0</div></div>
+        <div class="card"><div class="card-label">Vencidos — Urgente</div><div class="card-value c-red" id="d-vencidos">0</div></div>
+        <div class="card"><div class="card-label">Vencen en 3 días</div><div class="card-value c-orange" id="d-proximos">0</div></div>
+        <div class="card"><div class="card-label">Clientes con Deuda</div><div class="card-value" id="d-clientes">0</div></div>
     </div>
 
-    <!-- Tabs -->
     <div class="tabs">
         <div class="tab active" onclick="tab('fiados')">Fiados</div>
         <div class="tab" onclick="tab('clientes')">Clientes</div>
     </div>
 
-    <!-- FIADOS -->
     <div id="tab-fiados">
         <div class="section">
             <h2>Registrar Fiado</h2>
             <div class="form-row">
-                <div class="form-group">
-                    <label>Cliente</label>
-                    <select id="f-cliente"><option value="">Seleccionar...</option></select>
-                </div>
-                <div class="form-group">
-                    <label>Monto (Bs)</label>
-                    <input type="number" id="f-monto" min="0" step="0.01" placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label>Fecha de Vencimiento</label>
-                    <input type="date" id="f-fecha">
-                </div>
+                <div class="form-group"><label>Cliente</label><select id="f-cliente"><option value="">Seleccionar...</option></select></div>
+                <div class="form-group"><label>Monto (Bs)</label><input type="number" id="f-monto" min="0" step="0.01" placeholder="0.00"></div>
+                <div class="form-group"><label>Fecha de Vencimiento</label><input type="date" id="f-fecha"></div>
             </div>
-            <div class="form-group" style="margin-bottom:14px">
-                <label>Descripción (opcional)</label>
-                <input type="text" id="f-desc" placeholder="Ej: 2kg arroz, 1 aceite...">
-            </div>
-            <button class="btn" onclick="guardarFiado()">Registrar Fiado</button>
+            <div class="form-group" style="margin-bottom:12px"><label>Descripción</label><input type="text" id="f-desc" placeholder="Ej: 2kg arroz, 1 aceite..."></div>
+            <button class="btn" onclick="guardarFiado()">+ Registrar Fiado</button>
         </div>
-
         <div class="section">
             <div class="top-row">
                 <h2>Historial de Créditos</h2>
-                <select id="filtro" onchange="renderFiados()" style="width:160px">
+                <select id="filtro" onchange="renderFiados()" style="width:150px">
                     <option value="todos">Todos</option>
                     <option value="vencido">Vencidos</option>
                     <option value="pendiente">Pendientes</option>
@@ -143,241 +112,237 @@
                 </select>
             </div>
             <div class="table-wrap">
-                <table>
-                    <thead><tr>
-                        <th>Cliente</th><th>Monto</th><th>Vence</th>
-                        <th>Descripción</th><th>Estado</th><th>Acciones</th>
-                    </tr></thead>
-                    <tbody id="tb-fiados"></tbody>
-                </table>
+                <table><thead><tr><th>Cliente</th><th>Monto</th><th>Vence</th><th>Descripción</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <tbody id="tb-fiados"></tbody></table>
             </div>
         </div>
     </div>
 
-    <!-- CLIENTES -->
     <div id="tab-clientes" class="hidden">
         <div class="section">
             <h2>Agregar Cliente</h2>
             <div class="form-row">
-                <div class="form-group">
-                    <label>Nombre Completo</label>
-                    <input type="text" id="c-nombre" placeholder="Ej: Juan Pérez">
-                </div>
-                <div class="form-group">
-                    <label>WhatsApp (con código país)</label>
-                    <input type="text" id="c-tel" placeholder="584121234567">
-                </div>
+                <div class="form-group"><label>Nombre Completo</label><input type="text" id="c-nombre" placeholder="Ej: Juan Pérez"></div>
+                <div class="form-group"><label>WhatsApp (con código país)</label><input type="text" id="c-tel" placeholder="584121234567"></div>
             </div>
-            <button class="btn" onclick="guardarCliente()">Guardar Cliente</button>
+            <button class="btn" onclick="guardarCliente()">+ Guardar Cliente</button>
         </div>
-
         <div class="section">
             <h2>Mis Clientes</h2>
             <div class="table-wrap">
-                <table>
-                    <thead><tr>
-                        <th>Nombre</th><th>Teléfono</th><th>Deuda Activa</th><th>Acciones</th>
-                    </tr></thead>
-                    <tbody id="tb-clientes"></tbody>
-                </table>
+                <table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Deuda Activa</th><th>Acciones</th></tr></thead>
+                <tbody id="tb-clientes"></tbody></table>
             </div>
         </div>
     </div>
-
 </div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ── Storage ──────────────────────────────────────────
-let clientes = JSON.parse(localStorage.getItem('fp_clientes') || '[]');
-let fiados   = JSON.parse(localStorage.getItem('fp_fiados')   || '[]');
+const JARVIS_BASE = 'http://localhost:3099';
+let modoLocal = false;
+let _clientes = [], _fiados = [];
 
-function save() {
-    localStorage.setItem('fp_clientes', JSON.stringify(clientes));
-    localStorage.setItem('fp_fiados',   JSON.stringify(fiados));
-    dashboard();
+async function detectarModo() {
+    try {
+        const r = await fetch(JARVIS_BASE+'/status', {signal:AbortSignal.timeout(1500)});
+        const d = await r.json();
+        if (d.service === 'wa-jarvis-service') {
+            modoLocal = true;
+            const b = document.getElementById('modo-badge');
+            b.className = 'mode-badge mode-local';
+            b.textContent = '⚡ Jarvis Conectado';
+        }
+    } catch {}
 }
 
-// ── Helpers ──────────────────────────────────────────
 const hoy = () => new Date().toISOString().split('T')[0];
-const bs  = n => 'Bs. ' + parseFloat(n||0).toFixed(2);
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+const bs  = n => 'Bs. '+parseFloat(n||0).toFixed(2);
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+function toast(msg, dur=3000) {
+    const t = document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), dur);
+}
 
 function estadoFiado(f) {
-    if (f.estado === 'pagado') return 'pagado';
+    if (f.estado==='pagado') return 'pagado';
     return f.fechaVence < hoy() ? 'vencido' : 'pendiente';
 }
 
-function clienteById(id) {
-    return clientes.find(c => c.id === id) || { nombre: 'Desconocido', tel: '' };
+async function cargarDatos() {
+    if (modoLocal) {
+        const [cr,fr] = await Promise.all([
+            fetch(JARVIS_BASE+'/fiadospro/clientes').then(r=>r.json()),
+            fetch(JARVIS_BASE+'/fiadospro/fiados').then(r=>r.json())
+        ]);
+        _clientes=cr; _fiados=fr;
+    } else {
+        _clientes=JSON.parse(localStorage.getItem('fp_clientes')||'[]');
+        _fiados  =JSON.parse(localStorage.getItem('fp_fiados')  ||'[]');
+    }
 }
 
-// ── Tab switch ───────────────────────────────────────
+function saveLocal() {
+    if (!modoLocal) {
+        localStorage.setItem('fp_clientes', JSON.stringify(_clientes));
+        localStorage.setItem('fp_fiados',   JSON.stringify(_fiados));
+    }
+}
+
 function tab(name) {
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (name==='fiados' ? i===0 : i===1)));
-    document.getElementById('tab-fiados').classList.toggle('hidden', name !== 'fiados');
-    document.getElementById('tab-clientes').classList.toggle('hidden', name !== 'clientes');
-    if (name === 'clientes') renderClientes();
+    document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active', name==='fiados'?i===0:i===1));
+    document.getElementById('tab-fiados').classList.toggle('hidden', name!=='fiados');
+    document.getElementById('tab-clientes').classList.toggle('hidden', name!=='clientes');
+    if (name==='clientes') renderClientes();
 }
 
-// ── Dashboard ────────────────────────────────────────
 function dashboard() {
-    const hoyStr = hoy();
-    const en3 = new Date(); en3.setDate(en3.getDate() + 3);
+    const en3 = new Date(); en3.setDate(en3.getDate()+3);
     const en3Str = en3.toISOString().split('T')[0];
-
-    let total = 0, vencidos = 0, proximos = 0;
-    const conDeuda = new Set();
-
-    fiados.forEach(f => {
-        const est = estadoFiado(f);
-        if (est !== 'pagado') {
-            total += parseFloat(f.monto);
-            conDeuda.add(f.clienteId);
-            if (est === 'vencido') vencidos++;
-            else if (f.fechaVence <= en3Str) proximos++;
+    let total=0, vencidos=0, proximos=0; const conDeuda=new Set();
+    _fiados.forEach(f=>{
+        const est=estadoFiado(f);
+        if (est!=='pagado') {
+            total+=parseFloat(f.monto); conDeuda.add(f.clienteId);
+            if (est==='vencido') vencidos++;
+            else if (f.fechaVence<=en3Str) proximos++;
         }
     });
-
-    document.getElementById('d-total').textContent = bs(total);
-    document.getElementById('d-vencidos').textContent = vencidos;
-    document.getElementById('d-proximos').textContent = proximos;
-    document.getElementById('d-clientes').textContent = conDeuda.size;
-}
-
-// ── Clientes ─────────────────────────────────────────
-function guardarCliente() {
-    const nombre = document.getElementById('c-nombre').value.trim();
-    const tel    = document.getElementById('c-tel').value.trim().replace(/\D/g,'');
-    if (!nombre || !tel) { alert('Completa nombre y teléfono'); return; }
-    clientes.push({ id: uid(), nombre, tel });
-    save(); renderClientes(); refreshSelect();
-    document.getElementById('c-nombre').value = '';
-    document.getElementById('c-tel').value = '';
-}
-
-function renderClientes() {
-    const tbody = document.getElementById('tb-clientes');
-    tbody.innerHTML = '';
-    if (!clientes.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty">Sin clientes registrados</td></tr>'; return; }
-
-    clientes.forEach(c => {
-        const deuda = fiados.filter(f => f.clienteId === c.id && estadoFiado(f) !== 'pagado')
-                            .reduce((s,f) => s + parseFloat(f.monto), 0);
-        const tr = document.createElement('tr');
-        tr.innerHTML =
-            '<td><span class="nombre-bold">' + c.nombre + '</span></td>' +
-            '<td class="sub">' + c.tel + '</td>' +
-            '<td style="color:' + (deuda > 0 ? 'var(--danger)' : 'var(--accent)') + ';font-weight:600">' + bs(deuda) + '</td>' +
-            '<td class="actions">' +
-                (deuda > 0 ? '<a class="wa-btn" href="https://wa.me/' + c.tel + '?text=' + encodeURIComponent('Hola ' + c.nombre + ', te recordamos que tienes una deuda pendiente de ' + bs(deuda) + ' con nuestro negocio. Por favor contáctanos para coordinar el pago. Gracias!') + '" target="_blank">💬 Cobrar</a>' : '') +
-                '<button class="btn btn-sm btn-danger" onclick="borrarCliente(\'' + c.id + '\')">🗑</button>' +
-            '</td>';
-        tbody.appendChild(tr);
-    });
-}
-
-function borrarCliente(id) {
-    if (!confirm('¿Eliminar este cliente?')) return;
-    clientes = clientes.filter(c => c.id !== id);
-    save(); renderClientes(); refreshSelect();
+    document.getElementById('d-total').textContent=bs(total);
+    document.getElementById('d-vencidos').textContent=vencidos;
+    document.getElementById('d-proximos').textContent=proximos;
+    document.getElementById('d-clientes').textContent=conDeuda.size;
 }
 
 function refreshSelect() {
-    const sel = document.getElementById('f-cliente');
-    const val = sel.value;
-    sel.innerHTML = '<option value="">Seleccionar cliente...</option>';
-    clientes.forEach(c => {
-        const o = document.createElement('option');
-        o.value = c.id; o.textContent = c.nombre;
-        sel.appendChild(o);
-    });
-    sel.value = val;
+    const sel=document.getElementById('f-cliente'), val=sel.value;
+    sel.innerHTML='<option value="">Seleccionar cliente...</option>';
+    _clientes.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.nombre;sel.appendChild(o);});
+    sel.value=val;
 }
 
-// ── Fiados ───────────────────────────────────────────
-function guardarFiado() {
-    const clienteId  = document.getElementById('f-cliente').value;
-    const monto      = parseFloat(document.getElementById('f-monto').value);
-    const fechaVence = document.getElementById('f-fecha').value;
-    const desc       = document.getElementById('f-desc').value.trim();
-
-    if (!clienteId) { alert('Selecciona un cliente'); return; }
-    if (!monto || monto <= 0) { alert('Ingresa un monto válido'); return; }
-    if (!fechaVence) { alert('Ingresa la fecha de vencimiento'); return; }
-
-    fiados.push({ id: uid(), clienteId, monto, fechaVence, desc, estado: 'pendiente', fechaReg: hoy() });
-    save(); renderFiados();
-    document.getElementById('f-monto').value = '';
-    document.getElementById('f-desc').value = '';
+async function guardarCliente() {
+    const nombre=document.getElementById('c-nombre').value.trim();
+    const tel=document.getElementById('c-tel').value.trim().replace(/\D/g,'');
+    if (!nombre||!tel){toast('⚠ Completa nombre y teléfono');return;}
+    if (modoLocal) {
+        const r=await fetch(JARVIS_BASE+'/fiadospro/clientes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre,tel})});
+        _clientes.push(await r.json());
+    } else { _clientes.push({id:uid(),nombre,tel}); saveLocal(); }
+    document.getElementById('c-nombre').value='';
+    document.getElementById('c-tel').value='';
+    renderClientes(); refreshSelect(); toast('✅ Cliente guardado');
 }
 
-function renderFiados() {
-    const tbody  = document.getElementById('tb-fiados');
-    const filtro = document.getElementById('filtro').value;
-    tbody.innerHTML = '';
-
-    let lista = fiados.map(f => ({ ...f, _est: estadoFiado(f) }))
-                      .filter(f => filtro === 'todos' || f._est === filtro)
-                      .sort((a,b) => {
-                          const orden = { vencido:0, pendiente:1, pagado:2 };
-                          if (orden[a._est] !== orden[b._est]) return orden[a._est] - orden[b._est];
-                          return a.fechaVence.localeCompare(b.fechaVence);
-                      });
-
-    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">Sin registros</td></tr>'; return; }
-
-    lista.forEach(f => {
-        const c    = clienteById(f.clienteId);
-        const est  = f._est;
-        const badgeClass = est === 'pagado' ? 'b-pagado' : est === 'vencido' ? 'b-vencido' : 'b-pendiente';
-        const badgeText  = est === 'pagado' ? 'Pagado' : est === 'vencido' ? 'Vencido' : 'Pendiente';
-
-        const msgWA = encodeURIComponent(
-            'Hola ' + c.nombre + '! Te escribimos de nuestro negocio para recordarte que tienes un fiado de ' +
-            bs(f.monto) + (f.desc ? ' (' + f.desc + ')' : '') +
-            ' que vence el ' + f.fechaVence + '. Por favor coordina el pago. Gracias!'
-        );
-
-        const tr = document.createElement('tr');
-        tr.innerHTML =
-            '<td><span class="nombre-bold">' + c.nombre + '</span><br><span class="sub">' + c.tel + '</span></td>' +
-            '<td style="font-weight:600">' + bs(f.monto) + '</td>' +
-            '<td>' + f.fechaVence + '</td>' +
-            '<td class="sub">' + (f.desc || '—') + '</td>' +
-            '<td><span class="badge ' + badgeClass + '">' + badgeText + '</span></td>' +
-            '<td class="actions">' +
-                (est !== 'pagado'
-                    ? '<button class="btn btn-sm" onclick="marcarPagado(\'' + f.id + '\')">✓ Pagado</button>' +
-                      '<a class="wa-btn" href="https://wa.me/' + c.tel + '?text=' + msgWA + '" target="_blank">💬</a>'
-                    : '<button class="btn btn-sm btn-ghost" onclick="revertir(\'' + f.id + '\')">↩</button>') +
-                '<button class="btn btn-sm btn-danger" onclick="borrarFiado(\'' + f.id + '\')">🗑</button>' +
-            '</td>';
+function renderClientes() {
+    const tbody=document.getElementById('tb-clientes'); tbody.innerHTML='';
+    if (!_clientes.length){tbody.innerHTML='<tr><td colspan="4" class="empty">Sin clientes</td></tr>';return;}
+    _clientes.forEach(c=>{
+        const deuda=_fiados.filter(f=>f.clienteId===c.id&&estadoFiado(f)!=='pagado').reduce((s,f)=>s+parseFloat(f.monto),0);
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td><strong>'+c.nombre+'</strong></td><td class="sub">+'+c.tel+'</td>'+
+            '<td style="font-weight:600;color:'+(deuda>0?'var(--danger)':'var(--accent)')+'">'+bs(deuda)+'</td>'+
+            '<td class="actions">'+
+            (deuda>0?'<a class="wa-btn" href="https://wa.me/'+c.tel+'?text='+encodeURIComponent('Hola '+c.nombre+'! Tienes una deuda pendiente de '+bs(deuda)+'. Por favor contáctanos para el pago. ¡Gracias!')+'" target="_blank">💬 WA</a>':'')+
+            '<button class="btn btn-sm btn-danger" onclick="borrarCliente(\''+c.id+'\')">🗑</button></td>';
         tbody.appendChild(tr);
     });
 }
 
-function marcarPagado(id) {
+async function borrarCliente(id) {
+    if (!confirm('¿Eliminar cliente?')) return;
+    if (modoLocal) await fetch(JARVIS_BASE+'/fiadospro/clientes/'+id,{method:'DELETE'});
+    _clientes=_clientes.filter(c=>c.id!==id); saveLocal();
+    renderClientes(); refreshSelect(); dashboard();
+}
+
+async function guardarFiado() {
+    const clienteId=document.getElementById('f-cliente').value;
+    const monto=parseFloat(document.getElementById('f-monto').value);
+    const fechaVence=document.getElementById('f-fecha').value;
+    const desc=document.getElementById('f-desc').value.trim();
+    if (!clienteId){toast('⚠ Selecciona un cliente');return;}
+    if (!monto||monto<=0){toast('⚠ Monto inválido');return;}
+    if (!fechaVence){toast('⚠ Ingresa la fecha');return;}
+    if (modoLocal) {
+        const r=await fetch(JARVIS_BASE+'/fiadospro/fiados',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clienteId,monto,fechaVence,desc})});
+        _fiados.push(await r.json());
+    } else { _fiados.push({id:uid(),clienteId,monto,fechaVence,desc,estado:'pendiente',fechaReg:hoy()}); saveLocal(); }
+    document.getElementById('f-monto').value='';
+    document.getElementById('f-desc').value='';
+    renderFiados(); dashboard(); toast('✅ Fiado registrado');
+}
+
+function renderFiados() {
+    const tbody=document.getElementById('tb-fiados');
+    const filtro=document.getElementById('filtro').value;
+    tbody.innerHTML='';
+    const lista=_fiados.map(f=>({...f,_est:estadoFiado(f)}))
+        .filter(f=>filtro==='todos'||f._est===filtro)
+        .sort((a,b)=>{const o={vencido:0,pendiente:1,pagado:2};return o[a._est]!==o[b._est]?o[a._est]-o[b._est]:a.fechaVence.localeCompare(b.fechaVence);});
+    if (!lista.length){tbody.innerHTML='<tr><td colspan="6" class="empty">Sin registros</td></tr>';return;}
+    lista.forEach(f=>{
+        const c=_clientes.find(x=>x.id===f.clienteId)||{nombre:'?',tel:''};
+        const est=f._est;
+        const bC=est==='pagado'?'b-pagado':est==='vencido'?'b-vencido':'b-pendiente';
+        const bT=est==='pagado'?'Pagado':est==='vencido'?'Vencido':'Pendiente';
+        const waMsg=encodeURIComponent('Hola '+c.nombre+'! Te recordamos tu fiado de '+bs(f.monto)+(f.desc?' ('+f.desc+')':'')+' que vence el '+f.fechaVence+'. Por favor coordina el pago. ¡Gracias!');
+        const acciones=est!=='pagado'
+            ?'<button class="btn btn-sm" onclick="marcarPagado(\''+f.id+'\')">✓</button>'+
+              (modoLocal
+                ?'<button class="jarvis-btn" onclick="recordarJarvis(\''+f.id+'\')">⚡ WA</button>'
+                :'<a class="wa-btn" href="https://wa.me/'+c.tel+'?text='+waMsg+'" target="_blank">💬</a>'
+              )
+            :'<button class="btn btn-sm btn-ghost" onclick="revertir(\''+f.id+'\')">↩</button>';
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td><strong>'+c.nombre+'</strong><br><span class="sub">+'+c.tel+'</span></td>'+
+            '<td style="font-weight:600">'+bs(f.monto)+'</td>'+
+            '<td>'+f.fechaVence+'</td><td class="sub">'+(f.desc||'—')+'</td>'+
+            '<td><span class="badge '+bC+'">'+bT+'</span></td>'+
+            '<td class="actions">'+acciones+'<button class="btn btn-sm btn-danger" onclick="borrarFiado(\''+f.id+'\')">🗑</button></td>';
+        tbody.appendChild(tr);
+    });
+}
+
+async function marcarPagado(id) {
     if (!confirm('¿Confirmar pago?')) return;
-    const f = fiados.find(x => x.id === id);
-    if (f) { f.estado = 'pagado'; save(); renderFiados(); }
+    if (modoLocal) await fetch(JARVIS_BASE+'/fiadospro/fiados/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado:'pagado'})});
+    const f=_fiados.find(x=>x.id===id); if(f) f.estado='pagado';
+    saveLocal(); renderFiados(); dashboard(); toast('✅ Marcado como pagado');
 }
 
-function revertir(id) {
-    const f = fiados.find(x => x.id === id);
-    if (f) { f.estado = 'pendiente'; save(); renderFiados(); }
+async function revertir(id) {
+    if (modoLocal) await fetch(JARVIS_BASE+'/fiadospro/fiados/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado:'pendiente'})});
+    const f=_fiados.find(x=>x.id===id); if(f) f.estado='pendiente';
+    saveLocal(); renderFiados(); dashboard();
 }
 
-function borrarFiado(id) {
-    if (!confirm('¿Eliminar este fiado?')) return;
-    fiados = fiados.filter(x => x.id !== id);
-    save(); renderFiados();
+async function borrarFiado(id) {
+    if (!confirm('¿Eliminar?')) return;
+    if (modoLocal) await fetch(JARVIS_BASE+'/fiadospro/fiados/'+id,{method:'DELETE'});
+    _fiados=_fiados.filter(x=>x.id!==id); saveLocal();
+    renderFiados(); dashboard();
 }
 
-// ── Init ─────────────────────────────────────────────
-document.getElementById('fechaHoy').textContent =
-    new Date().toLocaleDateString('es-VE', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-document.getElementById('f-fecha').value = hoy();
-refreshSelect(); dashboard(); renderFiados();
+async function recordarJarvis(fiadoId) {
+    toast('📤 Enviando por WhatsApp...');
+    try {
+        const r=await fetch(JARVIS_BASE+'/fiadospro/recordar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fiadoId})});
+        const d=await r.json();
+        toast(d.ok?'✅ WhatsApp enviado!':'❌ '+d.error, 4000);
+    } catch { toast('❌ Error conectando con Jarvis', 4000); }
+}
+
+async function init() {
+    document.getElementById('fechaHoy').textContent=new Date().toLocaleDateString('es-VE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    document.getElementById('f-fecha').value=hoy();
+    await detectarModo();
+    await cargarDatos();
+    refreshSelect(); dashboard(); renderFiados();
+}
+init();
 </script>
 </body>
 </html>
